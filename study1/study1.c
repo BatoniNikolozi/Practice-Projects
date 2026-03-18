@@ -26,7 +26,7 @@ int goal; //Goal score integer
 char hero = '@'; //Our hero character
 char villain = 'X'; //Enemy
 char action; //Input key (moving)
-Player player; //Declaring player or sum, idk yet
+Player player; //Declaring player or sum, forgot what it does but it works
 
 ////------------------------------------------------------------------/
 // Text Section
@@ -63,11 +63,10 @@ int main(){ //Main
     
     //Asks user to enter Score Goal
     printf("What is the score goal? \n");
-    //check the input 
-     scanf("%d", &goal);
+    //check the input  
+     scanf("%d\n", &goal); 
 
-    
-    printf("\n"); //new line 
+     
     printf("Great! Goodluck\n"); //stupid message for decoration
     printf("press F to quit game\n"); //additional info
     Sleep(500); //wait 0.2 seconds or sum like that 
@@ -155,7 +154,6 @@ void drawMap(int randomX, int randomY){ // Function that draws map
                 }//End of nested if statement
 
             }else if(x == player.xx && y == player.yy){ //if it's at pos of hero
-                //spawnPlayer(randomX, randomY);        //then print hero
                 printf("%c", hero);       //prints our character
             }else if(x == 0){ //if the X is upper right corner
                 printf("#"); // make border
@@ -185,9 +183,8 @@ void updateMap(int randomX, int randomY){ // new map drawing
                   printf("\n"); //then make a new line
                 }//End of nested if statement
 
-            }else if(x == player.xx && y == player.yy){
-                //spawnPlayer(randomX, randomY);
-                printf("%c", hero);
+            }else if(x == player.xx && y == player.yy){ // if it's at the pos of hero
+                printf("%c", hero); //prints our character
             }else if(x == 0){ //if the X is upper right corner
                 printf("#"); // make border
                 fflush(stdout); // Show output immediately to not buffer #
@@ -201,13 +198,8 @@ void updateMap(int randomX, int randomY){ // new map drawing
         } // End of nested loop
     } // End of For loop
 
-}
-//FUNCTION
-/*void spawnPlayer(int randomX, int randomY){ // Spawns Player on Map  
-    
-    printf("%c", hero);
+}//End of function
 
-} // End of function*/
 //-------------------------------------------------------------------/
 // Comment Section
 
