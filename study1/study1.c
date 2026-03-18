@@ -20,6 +20,7 @@ typedef struct{ //Player struct
 } Player;
 //------------------------------------------------------------------/
 // Global Variable Section
+
 int x; //X coordinate for drawMap()
 int y; //Y coordinate for drawMap()
 int goal; //Goal score integer
@@ -31,87 +32,85 @@ Player player; //Declaring player or sum, forgot what it does but it works
 ////------------------------------------------------------------------/
 // Text Section
 
-//FUNCTION PROTOTYPES - functions explained below!
-void drawMap(int randomX, int randomY); // Draws map
-//void spawnPlayer(int randomX, int randomY); // Spawns Player
+//FUNCTION PROTOTYPES 
+
+void drawMap(); // Draws map
 void moving();  // pretty self explanatory
-void updateMap(int randomX, int randomY); // Map update after action
+void updateMap(); // Map update after action
 void moveUp(); // up
 void moveDown(); // down
 void moveLeft(); // left
 void moveRight(); // right
 
 //MAIN FUNCTION
-int main(){ //Main
+int main(void){ //Main
 
     srand(time(NULL)); //seeding random number so it updates per-every change of clock
 
     int randomX = (rand() % 19) + 1; // random number from 1 to 19
     int randomY = (rand() % 9) + 1; //random number from 1 to 9
-    //such weird numbers are necessary for character to not spawn outside box
+    //Prescise numbers to not touch borders
 
     player.xx = randomX; // player coordinate X is random from 1 to 19
     player.yy = randomY; // player coordinate Y is random from 1 to 9
                          // so they won't touch borders
 
     //Asks user to enter Name
-    printf("What is player name? \n");
-    //User inputs name
-     fgets(player.name, sizeof(player.name), stdin);
-    //Getting rid of new line after input
-     player.name[strcspn (player.name, "\n")] = '\0';
+    printf("What is player name? \n");  //User inputs name
     
-    //Asks user to enter Score Goal
-    printf("What is the score goal? \n");
-    //check the input  
-     scanf("%d\n", &goal); 
+    fgets(player.name, sizeof(player.name), stdin);     
+    
+    player.name[strcspn (player.name, "\n")] = '\0'; // Getting rid of newline after input
+    
+    printf("What is the score goal? \n");  
+     scanf("%d", &goal); 
 
-     
-    printf("Great! Goodluck\n"); //stupid message for decoration
-    printf("press F to quit game\n"); //additional info
-    Sleep(500); //wait 0.2 seconds or sum like that 
+
+    printf("\nGreat! Goodluck\n"); 
+    printf("press F to quit game\n"); 
+    Sleep(750); //wait 3/4 seconds or sum like that 
     system("cls"); //clear screen
-    drawMap(randomX, randomY); //draw map with character chosen randomly
+    drawMap(); //draw map with character chosen randomly
 
-    while (1){ //while game runs
+    while (1){ 
 
         action = getch();     // get input
         moving();             // move based on input
                                   
         system("cls"); //clear screen to prepare it for new, freshly updated map
         updateMap(randomX, randomY); //draw updated map
-        if(action == 'f'){ //if f is pressed
-            break; //break loop
+        if(action == 'f'){ 
+            break; 
         }//end of if statement
     }//end of while loop
 
-    return 0; // You'll never guess..
+    return 0; 
 } //End of Main function
 
 
 // FUNCTION
 void moving(){ //Function responsible for moving character
 
-    switch (action) { // action variable, which is updated after every click is 
-        case 'w':     //if W is pressed                    // getting new value
-            moveUp(); //execute moveUp funtion
-            break;    //break loop
-        case 'a':     //if A is pressed
-            moveLeft();//execute moveLeft function
-            break;     //break loop
-        case 's':     //if S is pressed
-            moveDown();//execute moveDown function 
-            break;     //break loop
-        case 'd':     //if D is pressed
-            moveRight();//execute moveRight function
-            break;  //break loop
+    switch (action) { 
+        case 'w': 
+            moveUp(); 
+            break;    
+        case 'a':     
+            moveLeft();
+            break;    
+        case 's':     
+            moveDown(); 
+            break;     
+        case 'd':     
+            moveRight();
+            break;  
     }//end of switch statement
 }//End of function
 
 //FUNCTION
 void moveUp(){ // checks if path is free and moves player up 
 
-    if(player.yy - 1 != 0){ // checks
+    if(player.yy > 1){ // checks space
         player.yy--;        // put player at Y with 1 less index than current
     }//End of for loop
 }//End of function
@@ -119,7 +118,7 @@ void moveUp(){ // checks if path is free and moves player up
 //FUNCTION
 void moveDown(){  // checks if path is free and moves player down
 
-    if(player.yy + 1 != 10){ // checks
+    if(player.yy < 9){ // checks space
         player.yy++;         // put player at Y with 1 more index than current
     }//End of for loop
 }//End of function
@@ -127,7 +126,7 @@ void moveDown(){  // checks if path is free and moves player down
 //FUNCTION
 void moveLeft(){ // checks if path is free and moves player left
 
-    if(player.xx - 1 != 0){ // checks
+    if(player.xx > 1){ // checks space
         player.xx--;        // put player at X with 1 less index than current
     }//End of for loop
 }//End of function
@@ -135,65 +134,67 @@ void moveLeft(){ // checks if path is free and moves player left
 //FUNCTION
 void moveRight(){ // checks if path is free and moves player right
  
-    if(player.xx + 1 != 20){ // checks
+    if(player.xx < 19){ // checks space
         player.xx++;         // put player at X with 1 more index than current
     }//End of for loop
 }//End of function
 
+
 //FUNCTION
-void drawMap(int randomX, int randomY){ // Function that draws map
+void drawMap(){ // Function that draws map
 
     for(int y = 0; y <= 10; y++){ // incrementing y
         for(int x = 0; x <= 20; x++){ // incrementing x
             if(y == 0 || y == 10){ //if y is the corner
                 printf("#"); // draw border
-                fflush(stdout); //Show output immediately to not buffer #
+                fflush(stdout); //Show output immediately to not buffer '#'
                 Sleep(5); // Wait 0.025 seconds
                 if(x == 20){ // but if its the right corner
                   printf("\n"); //then make a new line
                 }//End of nested if statement
 
             }else if(x == player.xx && y == player.yy){ //if it's at pos of hero
-                printf("%c", hero);       //prints our character
+                printf("%c", hero);      
             }else if(x == 0){ //if the X is upper right corner
-                printf("#"); // make border
-                fflush(stdout); // Show output immediately to not buffer #
-                Sleep(5);     // Wait 0.025 seconds
+                printf("#"); 
+                fflush(stdout); 
+                Sleep(5);     
 
             }else if(x == 20){ //if the X is upper left corner
-                printf("#\n"); // make border
-                fflush(stdout); //Show output immediately to not buffer #
-                Sleep(5); // Wait 0.025 seconds
+                printf("#\n"); 
+                fflush(stdout); 
+                Sleep(5); 
 
             }else{              //if it's rest of place
-                    printf(" "); //Just leave it empty
+                    printf(" "); 
             } // End of for loop inside nested loop
         } // End of nested loop
     } // End of For loop
 } // End of function
 
+
 //FUNCTION
-void updateMap(int randomX, int randomY){ // new map drawing
+void updateMap(){ // new map drawing
     for(int y = 0; y <= 10; y++){ // incrementing y
         for(int x = 0; x <= 20; x++){ // incrementing x
             if(y == 0 || y == 10){ //if y is the corner
-                printf("#"); // draw border
-                fflush(stdout); //Show output immediately to not buffer #
+                printf("#"); 
+                fflush(stdout); //Show output immediately to not buffer '#'
                 if(x == 20){ // but if its the right corner
-                  printf("\n"); //then make a new line
+                  printf("\n"); 
                 }//End of nested if statement
 
             }else if(x == player.xx && y == player.yy){ // if it's at the pos of hero
                 printf("%c", hero); //prints our character
             }else if(x == 0){ //if the X is upper right corner
-                printf("#"); // make border
-                fflush(stdout); // Show output immediately to not buffer #
+                printf("#"); 
+                fflush(stdout); 
 
             }else if(x == 20){ //if the X is upper left corner
-                printf("#\n"); // make border
-                fflush(stdout); //Show output immediately to not buffer #
+                printf("#\n"); 
+                fflush(stdout); 
             }else{              //if it's rest of place
-                    printf(" "); //Just leave it empty
+                    printf(" "); 
             } // End of for loop inside nested loop
         } // End of nested loop
     } // End of For loop
